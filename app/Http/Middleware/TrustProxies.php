@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Middleware;
-
+//© 2020 Copyright: Tahu Coding
 use Fideloper\Proxy\TrustProxies as Middleware;
 use Illuminate\Http\Request;
 

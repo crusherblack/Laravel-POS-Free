@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+<!-- © 2020 Copyright: Tahu Coding -->
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -69,3 +69,4 @@
 
     </style>
     @endpush
+<!-- © 2020 Copyright: Tahu Coding -->

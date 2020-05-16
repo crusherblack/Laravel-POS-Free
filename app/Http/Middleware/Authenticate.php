@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Middleware;
-
+//© 2020 Copyright: Tahu Coding
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
 class Authenticate extends Middleware

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+<!-- © 2020 Copyright: Tahu Coding -->
 @section('content')
 <div class="container-fluid">
     <div class="row justify-content-center">
@@ -34,17 +34,24 @@
                                 <div class="view overlay">
                                     <form action="{{url('/transcation/addproduct', $product->id)}}" method="POST">
                                         @csrf
+                                        @if($product->qty == 0)
                                         <img class="card-img-top gambar" src="{{ $product->image }}"
+                                            alt="Card image cap">
+                                        <button class="btn btn-primary btn-sm cart-btn disabled"><i
+                                                class="fas fa-cart-plus"></i></button>
+                                        @else
+                                         <img class="card-img-top gambar" src="{{ $product->image }}"
                                             alt="Card image cap" style="cursor: pointer"
                                             onclick="this.closest('form').submit();return false;">
                                         <button type="submit" class="btn btn-primary btn-sm cart-btn"><i
                                                 class="fas fa-cart-plus"></i></button>
+                                        @endif
                                     </form>
                                 </div>
                                 <div class="card-body">
                                     <label class="card-text text-center font-weight-bold"
                                         style="text-transform: capitalize;">
-                                        {{ Str::words($product->name,5) }}</label>
+                                        {{ Str::words($product->name,4) }} ({{$product->qty}}) </label>
                                     <p class="card-text text-center">Rp. {{ number_format($product->price,2,',','.') }}
                                     </p>
                                 </div>
@@ -155,7 +162,7 @@
         </div>
     </div>
     @endsection
-
+    <!-- © 2020 Copyright: Tahu Coding -->
     @push('style')
     <style>
         .gambar {
@@ -204,11 +211,12 @@
             cursor: pointer;
 
         }
-
+        
         .productCard:hover {
             border: solid 1px rgb(172, 172, 172);
 
         }
 
     </style>
+    <!-- © 2020 Copyright: Tahu Coding -->
     @endpush

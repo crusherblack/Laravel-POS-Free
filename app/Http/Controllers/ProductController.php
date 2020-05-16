@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+//© 2020 Copyright: Tahu Coding
 use File;
 use App\Product;
 use App\HistoryProduct;
@@ -162,5 +162,5 @@ class ProductController extends Controller
         return redirect($request->redirect_to)->with('error',$e);
     }
 
-    
+    //© 2020 Copyright: Tahu Coding
 }

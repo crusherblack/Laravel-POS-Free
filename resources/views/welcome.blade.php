@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- © 2020 Copyright: Tahu Coding -->
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -98,3 +99,4 @@
         </div>
     </body>
 </html>
+<!-- © 2020 Copyright: Tahu Coding -->

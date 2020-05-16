@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Middleware;
-
+//© 2020 Copyright: Tahu Coding
 use Illuminate\Foundation\Http\Middleware\TrimStrings as Middleware;
 
 class TrimStrings extends Middleware

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+//© 2020 Copyright: Tahu Coding
 use Illuminate\Http\Request;
 use App\Product;
 
@@ -134,3 +134,4 @@ class TransactionController extends Controller
         return redirect()->back();
     }
 }
+//© 2020 Copyright: Tahu Coding

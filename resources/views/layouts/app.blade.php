@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- CSRF Token -->
+    <!-- CSRF Token  © 2020 Copyright: Tahu Coding  -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
@@ -151,7 +151,7 @@
           <!-- Footer Elements -->
 
           <!-- Copyright -->
-          <div class="footer-copyright text-center py-3">© 2020 Copyright:
+          <div class="footer-copyright text-center py-3">© 2020 Copyright: 
             <a href="https://mdbootstrap.com/"> Tahu Coding</a>
           </div>
           <!-- Copyright -->
@@ -165,7 +165,7 @@
 <!-- Bootstrap core JavaScript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js">
 </script>
-<!-- MDB core JavaScript -->
+<!-- MDB core JavaScript //© 2020 Copyright: Tahu Coding -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.18.0/js/mdb.min.js"></script>
 
 

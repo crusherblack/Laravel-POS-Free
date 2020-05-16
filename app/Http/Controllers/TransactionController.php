@@ -82,15 +82,19 @@ class TransactionController extends Controller
     }
 
     public function addProductCart($id){
-        $product = Product::find($id);  
-        
+        $product = Product::find($id);      
+                
         $cart = \Cart::session(Auth()->id())->getContent();        
         $cek_itemId = $cart->whereIn('id', $id);  
       
         if($cek_itemId->isNotEmpty()){
-            \Cart::session(Auth()->id())->update($id, array(
-            'quantity' => 1
-        ));
+            if($product->qty == $cek_itemId[$id]->quantity){
+                return redirect()->back()->with('error','jumlah item kurang');
+            }else{
+                \Cart::session(Auth()->id())->update($id, array(
+                    'quantity' => 1
+                ));
+            }            
         }else{
              \Cart::session(Auth()->id())->add(array(
             'id' => $id,
@@ -102,12 +106,8 @@ class TransactionController extends Controller
             )          
         ));
         
-        }
-        
-        $name = [
-            'name' => $product->name
-        ];
-       
+        }       
+
         return redirect()->back();
     }
 
@@ -133,5 +133,46 @@ class TransactionController extends Controller
         \Cart::session(Auth()->id())->clear();
         return redirect()->back();
     }
+
+    public function decreasecart($id){
+        $product = Product::find($id);      
+                
+        $cart = \Cart::session(Auth()->id())->getContent();        
+        $cek_itemId = $cart->whereIn('id', $id); 
+
+        if($cek_itemId[$id]->quantity == 1){
+            \Cart::session(Auth()->id())->remove($id);  
+        }else{
+            \Cart::session(Auth()->id())->update($id, array(
+            'quantity' => array(
+                'relative' => true,
+                'value' => -1
+            )));            
+        }
+        return redirect()->back();
+
+    }
+
+
+    public function increasecart($id){
+        $product = Product::find($id);     
+        
+        $cart = \Cart::session(Auth()->id())->getContent();        
+        $cek_itemId = $cart->whereIn('id', $id); 
+
+        if($product->qty == $cek_itemId[$id]->quantity){
+            return redirect()->back()->with('error','jumlah item kurang');
+        }else{
+            \Cart::session(Auth()->id())->update($id, array(
+            'quantity' => array(
+                'relative' => true,
+                'value' => 1
+            )));
+
+            return redirect()->back();
+        }        
+    }
+
+    
 }
 //© 2020 Copyright: Tahu Coding

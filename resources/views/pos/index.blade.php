@@ -40,7 +40,7 @@
                                         <button class="btn btn-primary btn-sm cart-btn disabled"><i
                                                 class="fas fa-cart-plus"></i></button>
                                         @else
-                                         <img class="card-img-top gambar" src="{{ $product->image }}"
+                                        <img class="card-img-top gambar" src="{{ $product->image }}"
                                             alt="Card image cap" style="cursor: pointer"
                                             onclick="this.closest('form').submit();return false;">
                                         <button type="submit" class="btn btn-primary btn-sm cart-btn"><i
@@ -85,9 +85,9 @@
                             <thead>
                                 <tr>
                                     <th width="10%">No</th>
-                                    <th width="40%">Nama Product</th>
-                                    <th width="10%">Qty</th>
-                                    <th width="40%" class="text-right">Sub Total</th>
+                                    <th width="30%">Nama Product</th>
+                                    <th width="30%">Qty</th>
+                                    <th width="30%" class="text-right">Sub Total</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -107,11 +107,29 @@
                                     <td>{{Str::words($item['name'],3)}} <br>Rp.
                                         {{ number_format($item['pricesingle'],2,',','.') }}
                                     </td>
-                                    <td class="font-weight-bold">{{$item['qty']}}</td>
+                                    <td class="font-weight-bold">
+                                        <form action="{{url('/transcation/decreasecart', $item['rowId'])}}"
+                                            method="POST" style='display:inline;'>
+                                            @csrf
+                                            <button class="btn btn-sm btn-info"
+                                                style="display: inline;padding:0.4rem 0.6rem!important"><i
+                                                    class="fas fa-minus"></i></button>
+                                        </form>
+                                        <a style="display: inline">{{$item['qty']}}</a>
+                                        <form action="{{url('/transcation/increasecart', $item['rowId'])}}"
+                                            method="POST" style='display:inline;'>
+                                            @csrf
+                                            <button class="btn btn-sm btn-primary"
+                                                style="display: inline;padding:0.4rem 0.6rem!important"><i
+                                                    class="fas fa-plus"></i></button>
+                                        </form>
+                                    </td>
                                     <td class="text-right">Rp. {{ number_format($item['price'],2,',','.') }}</td>
                                 </tr>
                                 @empty
-                                <p>No users</p>
+                                <tr>
+                                    <td colspan="4" class="text-center">Empty Cart</td>
+                                </tr>
                                 @endforelse
                             </tbody>
                         </table>
@@ -163,7 +181,18 @@
     </div>
     @endsection
     <!-- © 2020 Copyright: Tahu Coding -->
+    @push('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    @if(Session::has('error'))
+    <script>
+        toastr.error('Telah mencapai jumlah maximum Product | Silahkan tambah stock Product terlebih dahulu untuk menambahkan')
+    </script>
+    @endif
+
+    @endpush
+
     @push('style')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
     <style>
         .gambar {
             width: 100%;
@@ -211,7 +240,7 @@
             cursor: pointer;
 
         }
-        
+
         .productCard:hover {
             border: solid 1px rgb(172, 172, 172);
 

@@ -26,3 +26,5 @@ Route::get('/transcation', 'TransactionController@index');
 Route::post('/transcation/addproduct/{id}', 'TransactionController@addProductCart');
 Route::post('/transcation/removeproduct/{id}', 'TransactionController@removeProductCart');
 Route::post('/transcation/clear', 'TransactionController@clear');
+Route::post('/transcation/increasecart/{id}', 'TransactionController@increasecart');
+Route::post('/transcation/decreasecart/{id}', 'TransactionController@decreasecart');

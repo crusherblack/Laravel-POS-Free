@@ -11,8 +11,15 @@
                             <div class="col">
                                 <h4 class="font-weight-bold">Products</h4>
                             </div>
+                            <div class="col text-right">
+                                <select name="" id="" class="form-control from-control-sm" style="font-size: 12px">
+                                    <option value="" holder>Filter Category</option>
+                                    <option value="1">All Category...</option>
+                                    <!-- Kembangkan sendiri ya bagian ini kalau bisa pake select2 biar keren -->
+                                </select>
+                            </div>
                             <div class="col"><input type="text" name="search"
-                                    class="form-control form-control-sm col-sm-9 float-right"
+                                    class="form-control form-control-sm col-sm-12 float-right"
                                     placeholder="Search Product..." onblur="this.form.submit()"></div>
                             <div class="col-sm-3"><button type="submit"
                                     class="btn btn-primary btn-sm float-right btn-block">Cari Product</button></div>
@@ -20,9 +27,6 @@
                     </form>
                 </div>
                 <div class="card-body">
-                    @if(Session::has('success'))
-                    @include('layouts.flash-success',[ 'message'=> Session('success') ])
-                    @endif
                     <div class="row">
                         @foreach ($products as $product)
                         <div style="width: 16.66%;border:1px solid rgb(243, 243, 243)" class="mb-4">
@@ -62,13 +66,14 @@
                         <div class="col-sm-8">
                             <select name="" id="" class="form-control from-control-sm" style="font-size: 13px">
                                 <option value="1">Take Away Customer</option>
-                                <option value="" holder>Other Customer...</option> <!-- Kembangkan sendiri ya bagian ini -->
+                                <option value="" holder>Other Customer...</option>
+                                <!-- Kembangkan sendiri ya bagian ini -->
                             </select>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div style="overflow-y:auto;max-height:50vh" class="mb-3">
+                    <div style="overflow-y:auto;min-height:53vh;max-height:53vh" class="mb-3">
                         <table class="table table-sm">
                             <thead>
                                 <tr>
@@ -129,16 +134,20 @@
                     </table>
                     <div class="row">
                         <div class="col-sm-4">
-                        <form action="{{ url('/transcation/clear') }}" method="POST">
+                            <form action="{{ url('/transcation/clear') }}" method="POST">
                                 @csrf
-                                <button class="btn btn-info btn-lg btn-block"  onclick="return confirm('Apakah anda yakin ingin meng-clear cart ?');" type="submit" >Clear</button>
-                            </form>                            
+                                <button class="btn btn-info btn-lg btn-block" style="padding:1rem!important"
+                                    onclick="return confirm('Apakah anda yakin ingin meng-clear cart ?');"
+                                    type="submit">Clear</button>
+                            </form>
                         </div>
                         <div class="col-sm-4">
-                            <button class="btn btn-primary btn-lg btn-block">Hold</button> <!-- Kembangkan sendiri ya bagian ini, logikanya kita simpan cartnya sementara dalam databse ntar kalau butuh keluarin lagi-->
+                            <button class="btn btn-primary btn-lg btn-block"
+                                style="padding:1rem!important">Hold</button>
+                            <!-- Kembangkan sendiri ya bagian ini, logikanya kita simpan cartnya sementara dalam databse ntar kalau butuh keluarin lagi-->
                         </div>
                         <div class="col-sm-4">
-                            <button class="btn btn-success btn-lg btn-block">Pay</button>
+                            <button class="btn btn-success btn-lg btn-block" style="padding:1rem!important">Pay</button>
                         </div>
                     </div>
                 </div>

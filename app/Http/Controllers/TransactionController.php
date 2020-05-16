@@ -11,7 +11,7 @@ use Darryldecode\Cart\CartCondition;
 class TransactionController extends Controller
 {
     public function index(){
-       
+        //dd(request()->all());
         //product
         $products = Product::when(request('search'), function($query){
                         return $query->where('name','like','%'.request('search').'%');
@@ -21,11 +21,17 @@ class TransactionController extends Controller
 
 
         //cart item
+        if(request()->tax){
+            $tax = "+10%";
+        }else{
+            $tax = "0%";
+        }
+
         $condition = new \Darryldecode\Cart\CartCondition(array(
                 'name' => 'pajak',
                 'type' => 'tax', //tipenya apa
                 'target' => 'total', //target kondisi ini apply ke mana (total, subtotal)
-                'value' => '+10%', //contoh -12% or -10 or +10 etc
+                'value' => $tax, //contoh -12% or -10 or +10 etc
                 'order' => 1
             ));                
             
@@ -34,7 +40,7 @@ class TransactionController extends Controller
         $items = \Cart::session(Auth()->id())->getContent();
         
         if(\Cart::isEmpty()){
-            $cart_data = null;            
+            $cart_data = [];            
         }
         else{
             foreach($items as $row) {
@@ -119,7 +125,12 @@ class TransactionController extends Controller
         
         request()->session()->put('kembalian', $kembalian);
     
-        return back();
+        return redirect()->back();
 
+    }
+
+    public function clear(){
+        \Cart::session(Auth()->id())->clear();
+        return redirect()->back();
     }
 }

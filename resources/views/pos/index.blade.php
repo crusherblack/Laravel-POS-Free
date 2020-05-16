@@ -55,10 +55,20 @@
         <div class="col-sm-4">
             <div class="card" style="min-height:85vh">
                 <div class="card-header bg-white">
-                    <h4 class="font-weight-bold">Cart</h4>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <h4 class="font-weight-bold">Cart</h4>
+                        </div>
+                        <div class="col-sm-8">
+                            <select name="" id="" class="form-control from-control-sm" style="font-size: 13px">
+                                <option value="1">Take Away Customer</option>
+                                <option value="" holder>Other Customer...</option> <!-- Kembangkan sendiri ya bagian ini -->
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
-                    <div style="overflow-y:auto;max-height:60vh">
+                    <div style="overflow-y:auto;max-height:50vh" class="mb-3">
                         <table class="table table-sm">
                             <thead>
                                 <tr>
@@ -72,7 +82,7 @@
                                 @php
                                 $no=1
                                 @endphp
-                                @foreach ($cart_data as $index=>$item)
+                                @forelse($cart_data as $index=>$item)
                                 <tr>
                                     <td>
                                         <form action="{{url('/transcation/removeproduct',$item['rowId'])}}"
@@ -88,10 +98,48 @@
                                     <td class="font-weight-bold">{{$item['qty']}}</td>
                                     <td class="text-right">Rp. {{ number_format($item['price'],2,',','.') }}</td>
                                 </tr>
-                                @endforeach
+                                @empty
+                                <p>No users</p>
+                                @endforelse
                             </tbody>
                         </table>
-                        
+                    </div>
+                    <table class="table table-sm table-borderless">
+                        <tr>
+                            <th width="60%">Sub Total</th>
+                            <th width="40%" class="text-right">Rp.
+                                {{ number_format($data_total['sub_total'],2,',','.') }} </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <form action="{{ url('/transcation') }}" method="get">
+                                    PPN 10%
+                                    <input type="checkbox" {{ $data_total['tax'] > 0 ? "checked" : ""}} name="tax"
+                                        value="true" onclick="this.form.submit()">
+                                </form>
+                            </th>
+                            <th class="text-right">Rp.
+                                {{ number_format($data_total['tax'],2,',','.') }}</th>
+                        </tr>
+                        <tr>
+                            <th>Total</th>
+                            <th class="text-right font-weight-bold">Rp.
+                                {{ number_format($data_total['total'],2,',','.') }}</th>
+                        </tr>
+                    </table>
+                    <div class="row">
+                        <div class="col-sm-4">
+                        <form action="{{ url('/transcation/clear') }}" method="POST">
+                                @csrf
+                                <button class="btn btn-info btn-lg btn-block"  onclick="return confirm('Apakah anda yakin ingin meng-clear cart ?');" type="submit" >Clear</button>
+                            </form>                            
+                        </div>
+                        <div class="col-sm-4">
+                            <button class="btn btn-primary btn-lg btn-block">Hold</button> <!-- Kembangkan sendiri ya bagian ini, logikanya kita simpan cartnya sementara dalam databse ntar kalau butuh keluarin lagi-->
+                        </div>
+                        <div class="col-sm-4">
+                            <button class="btn btn-success btn-lg btn-block">Pay</button>
+                        </div>
                     </div>
                 </div>
             </div>

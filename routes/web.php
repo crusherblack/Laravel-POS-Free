@@ -25,3 +25,4 @@ Route::resource('/products','ProductController');
 Route::get('/transcation', 'TransactionController@index');
 Route::post('/transcation/addproduct/{id}', 'TransactionController@addProductCart');
 Route::post('/transcation/removeproduct/{id}', 'TransactionController@removeProductCart');
+Route::post('/transcation/clear', 'TransactionController@clear');

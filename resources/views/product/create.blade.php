@@ -5,8 +5,8 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header bg-white"><label class="font-weight-bold">Products</label>
-                    <a href="{{ url('/products/create')}}" class="btn btn-primary btn-sm float-right">Add Product</a>
+                <div class="card-header bg-white"><h4 class="font-weight-bold">Products</h4>
+
                 </div>
                 <div class="card-body">
                     @if(Session::has('error'))

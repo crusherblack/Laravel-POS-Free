@@ -5,8 +5,17 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header bg-white"><label class="font-weight-bold">Products</label>
-                    <a href="{{ url('/products/create')}}" class="btn btn-primary btn-sm float-right">Add Product</a>
+                <div class="card-header bg-white">
+                    <form action="{{ route('products.index') }}" method="get">
+                        <div class="row">  
+                            <div class="col"><h4 class="font-weight-bold">Products</h4></div>
+                            <div class="col"><input type="text" name="search"
+                                    class="form-control form-control-sm col-sm-10 float-right"
+                                    placeholder="Search Product..." onblur="this.form.submit()"></div>
+                            <div class="col-sm-2"><a href="{{ url('/products/create')}}"
+                                    class="btn btn-primary btn-sm float-right btn-block">Add Product</a></div>
+                        </div>
+                    </form>
                 </div>
                 <div class="card-body">
                     @if(Session::has('success'))
@@ -28,7 +37,8 @@
                                         {{ Str::words($product->name,6) }}</h5>
                                     <p class="card-text text-center">Rp. {{ number_format($product->price,2,',','.') }}
                                     </p>
-                                <a href="{{ route('products.edit', $product->id) }}" class="btn btn-primary btn-block btn-sm">Details</a>
+                                    <a href="{{ route('products.edit', $product->id) }}"
+                                        class="btn btn-primary btn-block btn-sm">Details</a>
                                 </div>
                             </div>
                         </div>

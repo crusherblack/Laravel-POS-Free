@@ -2,17 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Product;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-
-use Intervention\Image\Facades\Image;
 use File;
+use App\Product;
+use App\HistoryProduct;
+use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
 
 class ProductController extends Controller
 {
     public function index(){
-        $products = Product::orderBy('created_at','desc')->paginate(8);
+       
+        $products = Product::when(request('search'), function($query){
+                        return $query->where('name','like','%'.request('search').'%');
+                    })
+                    ->orderBy('created_at','desc')
+                    ->paginate(8);
         return view('product.index', compact('products'));
     }
 
@@ -31,9 +39,17 @@ class ProductController extends Controller
                 $this->validate($request, [
                     'name' => 'required|min:2|max:200',
                     'price' => 'required',
-                    'qty' => 'required',
                     'description' => 'required', 
                 ]);
+
+                if($request->addQty){
+                    $qty = $request->qty + $request->addQty;
+                    if($qty < 0){
+                        return redirect()->back()->with('errorQty','Quantity cant be lower than zero');
+                    }
+                }else{
+                    $qty = $request->qty;
+                }
 
                 $product_id = Product::find($id);
                 if($request->has('image')){
@@ -44,11 +60,11 @@ class ProductController extends Controller
                     })->save(public_path('uploads/images/' . $new_gambar));
 
                     File::delete(public_path($product_id->image));
-
+                    
                     $product = [
                         'name' => $request->name,
                         'price' => $request->price,     
-                        'qty' => $request->qty,          
+                        'qty' => $qty,          
                         'image' => 'uploads/images/'.$new_gambar,
                         'description' => $request->description,
                     ];
@@ -57,15 +73,25 @@ class ProductController extends Controller
                     $product = [
                         'name' => $request->name,
                         'price' => $request->price,     
-                        'qty' => $request->qty,                         
+                        'qty' => $qty,                         
                         'description' => $request->description,
                     ];
                 }
                 $product_id->update($product);
+                if($request->addQty){
+                    HistoryProduct::create([
+                        'product_id' => $product_id->id,
+                        'user_id' => Auth::id(),
+                        'qty' => $request->qty,
+                        'qtyChange' => $request->addQty,
+                        'tipe' => 'change product qty from admin'
+                    ]);
+                }
+                
                 $message = 'Data Berhasil di update';
 
                 DB::commit();
-                return redirect($request->redirect_to)->with('success',$message);   
+                return redirect()->back()->with('success',$message);   
             }else{
                 $this->validate($request, [
                     'name' => 'required|min:2|max:200',
@@ -78,17 +104,26 @@ class ProductController extends Controller
                 $gambar = $request->image;
                 $new_gambar = time().$gambar->getClientOriginalName();
 
-                Product::create([
+                $product = Product::create([
                         'name' => $request->name,
                         'price' => $request->price,     
                         'qty' => $request->qty,          
                         'image' => 'uploads/images/'.$new_gambar,
                         'description' => $request->description,
+                        'user_id' => Auth::id()
                 ]);        
 
                 Image::make($gambar->getRealPath())->resize(null, 200, function ($constraint) {
                     $constraint->aspectRatio();
                 })->save(public_path('uploads/images/' . $new_gambar));
+
+                HistoryProduct::create([
+                    'product_id' => $product->id,
+                    'user_id' => Auth::id(),
+                    'qty' => $request->qty,
+                    'qtyChange' => 0,
+                    'tipe' => 'created product'
+                ]);
 
                 $message = 'Data Berhasil di simpan';
 
@@ -103,8 +138,10 @@ class ProductController extends Controller
     }
 
     public function edit($id){
+        
         $product = Product::find($id);
-        return view('product.edit',compact('product'));
+        $history = HistoryProduct::where('product_id',$id)->orderBy('created_at','desc')->get();
+        return view('product.edit',compact('product','history'));
     }
 
     public function destroy(Request $request,$id){

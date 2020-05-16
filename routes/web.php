@@ -21,3 +21,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('/products','ProductController');
+
+Route::get('/transcation', 'TransactionController@index');
+Route::post('/transcation/addproduct/{id}', 'TransactionController@addProductCart');
+Route::post('/transcation/removeproduct/{id}', 'TransactionController@removeProductCart');

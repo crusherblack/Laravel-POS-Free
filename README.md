@@ -1,12 +1,12 @@
 # Laravel 7 POS Free - Point of Sales
 
-Intruksi manual Ketikkan:
+Intruksi manual Ketikkan: (Clone dulu repisitory ini dengan cara: git clone https://github.com/crusherblack/Laravel-POS-Free pada terminal yang sudah terinstall GIT)
 
-Composer Install
-cp .env.example .env
-php artisan key:generate
-php artisan migrate (Jangan lupa set up database)
-php artisan db:seed
+1. Composer Install
+2. cp .env.example .env
+3. php artisan key:generate
+4. php artisan migrate (Jangan lupa set up database)
+5. php artisan db:seed
 
 ScreenShot Aplikasi
 

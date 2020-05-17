@@ -153,13 +153,14 @@ class ProductController extends Controller
         File::delete(public_path($product->image));       
 
         DB::commit();
-        return redirect($request->redirect_to)->with('success','Product berhasil dihapus');                             
+        return redirect()->route('products.index')->with('success','Product berhasil dihapus');                             
         }
         catch(\Exeception $e){
-            DB::rollback();            
+            DB::rollback();      
+            return redirect()->route('products.index')->with('error',$e);      
         }  
 
-        return redirect($request->redirect_to)->with('error',$e);
+        
     }
 
     //© 2020 Copyright: Tahu Coding

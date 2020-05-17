@@ -167,8 +167,8 @@
                             </form>
                         </div>
                         <div class="col-sm-4">
-                            <button class="btn btn-primary btn-lg btn-block"
-                                style="padding:1rem!important">Hold</button>
+                            <a class="btn btn-primary btn-lg btn-block"
+                                style="padding:1rem!important" href="{{url('/transcation/history')}}" target="_blank">History</a>
                             <!-- Kembangkan sendiri ya bagian ini, logikanya kita simpan cartnya sementara dalam databse ntar kalau butuh keluarin lagi-->
                         </div>
                         <div class="col-sm-4">
@@ -210,6 +210,8 @@
                         </tr>
                         @endif
                     </table>
+                    <form action="{{ url('/transcation/bayar') }}" method="POST">
+                    @csrf
                     <div class="form-group">
                         <label for="oke">Input Nominal</label>
                         <input id="oke" class="form-control" type="number" name="bayar" autofocus />
@@ -224,21 +226,42 @@
                     <h3 class="font-weight-bold text-primary">Kembalian:</h3>
                     <h1 class="font-weight-bold text-primary" id="kembalian"></h1>
                 </div>
+                
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="saveButton" disabled>Save transcation</button>
+                    <button type="submit" class="btn btn-primary" id="saveButton" disabled onClick="openWindowReload(this)">Save transcation</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
     @endsection
     <!-- © 2020 Copyright: Tahu Coding -->
+    <!-- Ini error harusnya bisa dinamis ambil value dari controller tp agar cepet ya biar aja gini silahkan modifikasi  -->
     @push('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     @if(Session::has('error'))
     <script>
         toastr.error(
             'Telah mencapai jumlah maximum Product | Silahkan tambah stock Product terlebih dahulu untuk menambahkan'
+        )
+
+    </script>
+    @endif
+
+    @if(Session::has('errorTransaksi'))
+    <script>
+        toastr.error(
+            'Transaksi tidak valid | perhatikan jumlah pembayaran | cek jumlah product'
+        )
+
+    </script>
+    @endif
+
+    @if(Session::has('success'))
+    <script>
+        toastr.success(
+            'Transaksi berhasil | Thank Your from Tahu Coding'
         )
 
     </script>

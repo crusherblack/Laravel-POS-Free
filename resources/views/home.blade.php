@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card">
+            <div class="card" style="min-height: 85vh">
                 <div class="card-header bg-white font-weight-bold">Point Of Sales
                     
                 </div>

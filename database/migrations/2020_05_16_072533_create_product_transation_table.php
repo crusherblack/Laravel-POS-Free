@@ -16,7 +16,8 @@ class CreateProductTransationTable extends Migration
         Schema::create('product_transation', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('invoices_number');
+            $table->string('invoices_number');
+            $table->unsignedBigInteger('qty');
             $table->timestamps();
         });
     }

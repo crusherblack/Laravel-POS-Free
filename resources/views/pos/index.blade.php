@@ -284,11 +284,17 @@
                 ',00';
 
             cek(bayar, jumlah);
+            const saveButton = document.getElementById("saveButton");   
+
+            if(jumlah === 0){
+                saveButton.disabled = true;
+            }
 
         };
 
         function cek(bayar, jumlah) {
-            const saveButton = document.getElementById("saveButton");
+            const saveButton = document.getElementById("saveButton");   
+
             if (bayar < jumlah) {
                 saveButton.disabled = true;
             } else {

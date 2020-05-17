@@ -25,8 +25,7 @@
                                 <td>{{$item->total}}</td>
                             <td><a href="{{url('/transcation/laporan', $item->invoices_number )}}" class="btn btn-primary btn-sm"><i class="fas fa-print"></i></a></td>
                             </tr>
-                        @endforeach
-                        
+                        @endforeach                        
                     </table>
                     <div>{{ $history->links() }}</div>
                 </div>

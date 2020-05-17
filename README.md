@@ -1,5 +1,6 @@
 # Laravel 7 POS Free - Point of Sales
 
+Link Youtube for Installation
 https://youtu.be/LsOF8G-P6Go
 
 Intruksi manual Ketikkan: (Clone dulu repisitory ini dengan cara: git clone https://github.com/crusherblack/Laravel-POS-Free pada terminal yang sudah terinstall GIT)

@@ -4,14 +4,18 @@ namespace App\Http\Controllers;
 //© 2020 Copyright: Tahu Coding
 use Illuminate\Http\Request;
 use App\Product;
+use App\Transaction;
 
 use Darryldecode\Cart\CartCondition;
+
+//import dulu packagenya biar bs dipake
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 
 class TransactionController extends Controller
 {
-    public function index(){
-        //dd(request()->all());
+    public function index(){    
+             
         //product
         $products = Product::when(request('search'), function($query){
                         return $query->where('name','like','%'.request('search').'%');
@@ -121,11 +125,27 @@ class TransactionController extends Controller
 
         $cart_total = \Cart::session(Auth()->id())->getTotal();
         $bayar = request()->bayar;
-        $kembalian = $bayar - $cart_total;      
+        $kembalian = (int)$bayar - (int)$cart_total;
         
-        request()->session()->put('kembalian', $kembalian);
-    
+        if($kembalian < 0){
+            return redirect()->back()->with('error','jumlah pembayaran gak valid');
+        }
+
+        $id = IdGenerator::generate(['table' => 'transcations', 'length' => 10, 'prefix' =>'INV-', 'field' => 'invoices_number']);
+        Transcation::create([
+            'invoices_number' => $id,
+            'user_id' => Auth::id(),
+            'pay' => request()->bayar,
+            'total' => $cart_total
+        ]);
+        //harusnya disini bisa kalian kembangkan dengan cara saya kasih clue
+        //ambil semua data dari cart
+        //trus buat array baru menggunakan method bawaan laravel collection yaitu map trus loop dan insert deh satu-satu ke table details transaksi yang dalamnya ada transaksi_id
+        //kegunaannya adalah agar kalian bisa tracking kedepan dan bs print ulang details transaksinya
+
+
         return redirect()->back();
+        
 
     }
 

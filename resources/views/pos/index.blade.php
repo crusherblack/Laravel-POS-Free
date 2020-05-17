@@ -172,9 +172,61 @@
                             <!-- Kembangkan sendiri ya bagian ini, logikanya kita simpan cartnya sementara dalam databse ntar kalau butuh keluarin lagi-->
                         </div>
                         <div class="col-sm-4">
-                            <button class="btn btn-success btn-lg btn-block" style="padding:1rem!important">Pay</button>
+                            <button class="btn btn-success btn-lg btn-block" style="padding:1rem!important"
+                                data-toggle="modal" data-target="#fullHeightModalRight">Pay</button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade right" id="fullHeightModalRight" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+
+        <!-- Add class .modal-full-height and then add class .modal-right (or other classes from list above) to set a position to the modal -->
+        <div class="modal-dialog modal-full-height modal-right" role="document">
+
+        <!-- Sorry campur2 bahasa indonesia sama inggris krn kebiasaan make b.inggris eh ternyata buat aplikasi buat indonesia jadi gini deh  -->
+            <div class="modal-content">
+                <div class="modal-header indigo">
+                    <h6 class="modal-title w-100 text-light" id="myModalLabel">Billing Information</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-sm table-borderless">
+                        <tr>
+                            <th width="60%">Sub Total</th>
+                            <th width="40%" class="text-right">Rp.
+                                {{ number_format($data_total['sub_total'],2,',','.') }} </th>
+                        </tr>
+                        @if($data_total['tax'] > 0)
+                        <tr>
+                            <th>PPN 10%</th>
+                            <th class="text-right">Rp.
+                                {{ number_format($data_total['tax'],2,',','.') }}</th>
+                        </tr>
+                        @endif
+                    </table>
+                    <div class="form-group">
+                        <label for="oke">Input Nominal</label>
+                        <input id="oke" class="form-control" type="number" name="bayar" autofocus />
+                    </div>
+                    <h3 class="font-weight-bold">Total:</h3>
+                    <h1 class="font-weight-bold mb-5">Rp. {{ number_format($data_total['total'],2,',','.') }}</h1>
+                    <input id="totalHidden" type="hidden" name="totalHidden" value="{{$data_total['total']}}" />
+
+                    <h3 class="font-weight-bold">Bayar:</h3>
+                    <h1 class="font-weight-bold mb-5" id="pembayaran"></h1>
+
+                    <h3 class="font-weight-bold text-primary">Kembalian:</h3>
+                    <h1 class="font-weight-bold text-primary" id="kembalian"></h1>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveButton" disabled>Save transcation</button>
                 </div>
             </div>
         </div>
@@ -185,9 +237,57 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     @if(Session::has('error'))
     <script>
-        toastr.error('Telah mencapai jumlah maximum Product | Silahkan tambah stock Product terlebih dahulu untuk menambahkan')
+        toastr.error(
+            'Telah mencapai jumlah maximum Product | Silahkan tambah stock Product terlebih dahulu untuk menambahkan'
+        )
+
     </script>
     @endif
+
+    <script>
+        $(document).ready(function () {
+            $('#fullHeightModalRight').on('shown.bs.modal', function () {
+                $('#oke').trigger('focus');
+            });
+        });
+
+        oke.oninput = function () {
+            let jumlah = parseInt(document.getElementById('totalHidden').value) ? parseInt(document.getElementById('totalHidden').value) : 0;
+            let bayar = parseInt(document.getElementById('oke').value) ? parseInt(document.getElementById('oke').value) : 0;
+            let hasil = bayar - jumlah;
+            document.getElementById("pembayaran").innerHTML = bayar ? 'Rp ' + rupiah(bayar) + ',00' : 'Rp ' + 0 +
+                ',00';
+            document.getElementById("kembalian").innerHTML = hasil ? 'Rp ' + rupiah(hasil) + ',00' : 'Rp ' + 0 +
+                ',00';
+
+            cek(bayar, jumlah);
+
+        };
+
+        function cek(bayar, jumlah) {
+            const saveButton = document.getElementById("saveButton");
+            if (bayar < jumlah) {
+                saveButton.disabled = true;
+            } else {
+                saveButton.disabled = false;
+            }
+        }
+
+        function rupiah(bilangan) {
+            var number_string = bilangan.toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{1,3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+            return rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        }
+
+    </script>
 
     @endpush
 

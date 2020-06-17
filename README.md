@@ -1,4 +1,4 @@
-# Laravel 7 POS Free - Point of Sales
+# Laravel 7 POS Free - Point of Sales (If you like don't forget to leave a Star, Thank You)
 
 Link Youtube for Installation
 https://youtu.be/LsOF8G-P6Go
